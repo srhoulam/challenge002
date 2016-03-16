@@ -6,16 +6,19 @@ document.addEventListener("DOMContentLoaded", function() {
         addEventListener('click', function(event) {
             event.stopPropagation();
 
-            var collection = [];
-            for(var count = 0; count < 10000; count++) {
-                collection.push(count > 1023 ? 1023 : count);
-            }
-
+            //  Test cases
             runTest({
-                'collection' : collection,
+                'collection' : (function() {
+                    var collection = [];
+                    for(var count = 0; count < 10000; count++) {
+                        collection.push(count > 1023 ? 1023 : count);
+                    }
+                    return collection;
+                })(),
                 mappingFn : function(element) {
                     return Math.pow(2, element);
                 }
             });
+            //  ... more test cases, if desired
         });
 });
