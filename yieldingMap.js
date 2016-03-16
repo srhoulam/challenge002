@@ -21,8 +21,16 @@ function yieldingMap(collection, mappingFn, options) {
             }
 
             //  effectively loop body and increment statement
-            result.push(mappingFn(collection[count++]));
-            setTimeout(step);
-        });
+            if(options.batchSize && options.batchSize > 1) {
+                for(var index = 0; index < options.batchSize && count < length; index++, count++) {
+                    result.push(mappingFn(collection[count]));
+                }
+            } else {
+                result.push(mappingFn(collection[count++]));
+            }
+
+
+            setTimeout(step, options.delayPeriod || 0);
+        }, options.delayPeriod || 0);
     });
 }
