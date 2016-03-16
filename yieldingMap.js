@@ -14,7 +14,7 @@ function yieldingMap(collection, mappingFn, options) {
     var result = [];
 
     return new Promise(function ymExecutor(resolve) {
-        setImmediate(function step() {
+        setTimeout(function step() {
             //  effectively loop condition
             if(count === length) {
                 return resolve(result);
@@ -22,7 +22,7 @@ function yieldingMap(collection, mappingFn, options) {
 
             //  effectively loop body and increment statement
             result.push(mappingFn(collection[count++]));
-            setImmediate(step);
+            setTimeout(step);
         });
     });
 }
