@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", function() {
         addEventListener('click', function(event) {
             event.stopPropagation();
 
-            runTest();
+            var collection = [];
+            for(var count = 0; count < 10000; count++) {
+                collection.push(count > 1023 ? 1023 : count);
+            }
+
+            runTest({
+                'collection' : collection,
+                mappingFn : function(element) {
+                    return Math.pow(2, element);
+                }
+            });
         });
 });
