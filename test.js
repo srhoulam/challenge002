@@ -1,3 +1,11 @@
+function promiseTest(testInvocation) {
+    return new Promise(function testExecutor(resolve, reject) {
+        testInvocation(function(success) {
+            success ? resolve(success) : reject(success);
+        });
+    });
+}
+
 var runTest = (function() {
     'use strict';
 
@@ -6,7 +14,7 @@ var runTest = (function() {
     function clickHandler() {
         clicks++;
     }
-    function runTest(options) {
+    function runTest(options, callback) {
         options = options || {};
 
         clicks = 0;
@@ -17,9 +25,16 @@ var runTest = (function() {
         var intervalId;
 
         yieldingMap(options.collection, options.mappingFn, options.ymOptions).
-            then(function testVerify() {
+            then(function testVerify(result) {
                 endTime = Date.now();
                 clearInterval(intervalId);
+
+                var correctness = options.collection.map(options.mappingFn).map(function(elem, index) {
+                    return elem === result[index];
+                }).reduce(function(pV, cV) {
+                    return pV && cV;
+                }, true);
+                console.log(`Test result: ${correctness ? 'success' : 'failure'}.`);
 
                 var numIntervals = Math.floor((endTime - beginTime) / 100);
 
@@ -30,6 +45,8 @@ var runTest = (function() {
                 }
                 console.log(`Number of intervals: ${numIntervals}`);
                 console.log(`Number of registered clicks: ${clicks}`);
+
+                return callback(correctness);
             });
 
         intervalId = setInterval(function() {
