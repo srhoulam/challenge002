@@ -23,6 +23,7 @@ var runTest = (function() {
         var beginTime = Date.now();
         var endTime;
         var intervalId;
+        var intervalLength = options.intervalLength || 100;
 
         yieldingMap(options.collection, options.mappingFn, options.ymOptions).
             then(function testVerify(result) {
@@ -36,7 +37,7 @@ var runTest = (function() {
                 }, true);
                 console.log(`Test result: ${correctness ? 'success' : 'failure'}.`);
 
-                var numIntervals = Math.floor((endTime - beginTime) / 100);
+                var numIntervals = Math.floor((endTime - beginTime) / intervalLength);
 
                 if(clicks === 0) {
                     console.error("Test failed completely.");
@@ -51,7 +52,7 @@ var runTest = (function() {
 
         intervalId = setInterval(function() {
             document.body.click();
-        }, 100);
+        }, intervalLength);
 
         console.log("Test in progress.");
     }
