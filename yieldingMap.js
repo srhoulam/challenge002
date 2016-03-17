@@ -1,6 +1,9 @@
 /**
- * @param {Array} collection The collection to iterate over.
- * @param {Function} mappingFn The function invoked each iteration.
+ * @param {Array}       collection          The collection to iterate over.
+ * @param {Function}    mappingFn           The function invoked each iteration.
+ * @param {Object}      options             An optional object with performance options.
+ * @param {Number}      options.batchSize   The number of elements to process at once.
+ * @param {Number}      options.delayPeriod The number of milliseconds to wait between batches.
  *
  * @returns {Promise} Returns a Promise fulfilled with the result of the map.
  */
